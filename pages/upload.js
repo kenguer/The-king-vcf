@@ -46,7 +46,7 @@ try {
     setStatus("✅ Votre numéro a été enregistré avec succès. Nous vous invitons à rejoindre notre communauté et à rester connecté pour toutes nos actualités et offres");  
     // Redirection safely in browser  
     setTimeout(() => {  
-      window.location.href = "https://chat.whatsapp.com/PUT_REAL_GROUP_LINK_HERE";  
+      window.location.href = "https://chat.whatsapp.com/LUxRyZntAga61IbrXIiXDs?mode=ems_copy_t";  
     }, 2000);  
   }  
 } catch (err) {  
