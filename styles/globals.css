@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Give the header action buttons a filled look */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button {
+    @apply text-white border-transparent transition-colors;
+  }
+
+  /* 1) Download VCF — warm neon green */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(1) {
+    background-color: #39ff14; /* warm neon green */
+    @apply text-black hover:brightness-110;
+  }
+
+  /* 2) Download PDF — blue */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(2) {
+    @apply bg-blue-500 hover:bg-blue-600;
+  }
+
+  /* 3) Delete All — red */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(3) {
+    @apply bg-red-500 hover:bg-red-600;
+  }
+
+  /* 4) Logout — red */
+  .max-w-6xl > .flex.items-center.justify-between > .flex.items-center.gap-2 > button:nth-child(4) {
+    @apply bg-red-500 hover:bg-red-600;
+  }
+
+  /* Keep the table "Delete" buttons neutral (doesn't affect header buttons) */
+  .card table button {
+    @apply bg-transparent text-inherit border border-white/10 hover:bg-white/5;
+  }
+
+  /* Floating Messages Button — larger & more noticeable (this already worked for you) */
+  .fixed.bottom-6.right-6 > button {
+    @apply p-6 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl;
+  }
+  .fixed.bottom-6.right-6 > button svg {
+    @apply w-8 h-8;
+  }
+}
+
+
+/* custom globals */
+:root {
+  --bg-main: #0D1117;
+  --bg-soft: #161B22;
+  --accent: #2FD771;
+  --muted: #9AA5B1;
+}
+
+html, body, #__next {
+  height: 100%;
+  background: var(--bg-main);
+  color: #E6EEF3;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* small UI touches */
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+.card {
+  background: #0f1519;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.pulse-live {
+  position: relative;
+}
+.pulse-live::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: ping 1.6s infinite;
+  opacity: 0.75;
+}
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  70% { transform: scale(1.6); opacity: 0.12; }
+  100% { transform: scale(2); opacity: 0; }
+}
+/* Custom neon utilities */
+.text-neon-green {
+  color: #39ff14 !important;
+}
+
+.bg-neon-green {
+  background-color: #39ff14 !important;
+}
+
+.border-neon-green {
+  border-color: #39ff14 !important;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 5px #39ff14,
+              0 0 10px #39ff14,
+              0 0 20px #39ff14,
+              0 0 40px #39ff14;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 8px #39ff14);
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+
+
+/* Main container for the new contact section */
+.contact-details-card {
+  margin-top: 4rem; /* mt-16 */
+  padding: 2rem; /* p-8 */
+  border-radius: 1rem; /* rounded-2xl */
+  background-color: #111827; /* This is a dark background, similar to 'card' */
+  color: #d1d5db; /* Default text color */
+}
+
+/* "Our contact details" title */
+.contact-details-card h3 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  color: #ffffff;
+}
+
+/* Red location pin icon */
+.contact-details-card h3 svg.location-icon {
+  color: #ef4444; /* text-red-500 */
+}
+
+/* Subtitle text */
+.contact-details-card .subtitle {
+  color: #9ca3af; /* text-gray-400 */
+  margin-top: 0.25rem; /* mt-1 */
+}
+
+/* Container for the list of contact items */
+.contact-items-container {
+  margin-top: 1.5rem; /* mt-6 */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+/* Individual contact item (Email, Phone, etc.) */
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem; /* gap-4 */
+  padding: 1rem; /* p-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  background-color: #1f2937; /* bg-gray-800 */
+  border: 1px solid #374151; /* border-gray-700 */
+}
+
+.contact-item .icon {
+  color: #4ade80; /* text-green-400 */
+  margin-top: 0.25rem; /* mt-1 */
+  flex-shrink: 0;
+}
+
+.contact-item h4 {
+  font-weight: 600; /* font-semibold */
+  color: #ffffff; /* text-white */
+  margin: 0;
+}
+
+.contact-item .value {
+  color: #d1d5db; /* text-gray-300 */
+  margin: 0.125rem 0 0 0;
+}
+
+.contact-item .sub-value {
+  font-size: 0.75rem; /* text-xs */
+  color: #6b7281; /* text-gray-500 */
+  margin: 0.25rem 0 0 0;
+}
+
+/* "Quick actions" section */
+.quick-actions {
+  margin-top: 2.5rem; /* mt-10 */
+}
+
+.quick-actions h3 {
+  font-size: 1.125rem; /* text-lg */
+}
+
+/* Grid for the quick action buttons */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem; /* gap-4 */
+  margin-top: 1rem; /* mt-4 */
+}
+
+
+/* Individual quick action button -- NEON GREEN STYLE */
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* gap-2 */
+  padding: 0.75rem; /* p-3 */
+  border-radius: 0.5rem; /* rounded-lg */
+  font-weight: 600; /* Bolder text */
+  text-decoration: none;
+  
+  /* --- Neon Green Effect --- */
+  background-color: #2ed46e; /* A vibrant neon green */
+  color: #111827; /* Dark text for high contrast and readability */
+  border: 1px solid #39FF14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6); /* Creates the "glow" */
+  transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+.quick-action-btn:hover {
+  background-color: #2ed46e; /* Make it slightly brighter on hover */
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.9); /* Intensify the glow */
+  transform: translateY(-2px); /* Add a subtle lift effect */
+}
+/* FAQ link section */
+.faq-section {
+  text-align: center;
+  margin-top: 2.5rem; /* mt-10 */
+}
+
+.faq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  color: #9ca3af; /* text-gray-400 */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.faq-link:hover {
+  color: #ffffff; /* hover:text-white */
+  }
+@layer components {
+  /* Download VCF button - warm neon green */
+  button:has(svg + span:contains("Download VCF")),
+  button:has(svg + text:contains("Download VCF")) {
+    @apply bg-green-500 hover:bg-green-600 text-white;
+  }
+
+  /* Download PDF button - blue */
+  button:has(svg + span:contains("Download PDF")),
+  button:has(svg + text:contains("Download PDF")) {
+    @apply bg-blue-500 hover:bg-blue-600 text-white;
+  }
+
+  /* Delete All button - red */
+  button:has(svg + span:contains("Delete All")),
+  button:has(svg + text:contains("Delete All")) {
+    @apply bg-red-500 hover:bg-red-600 text-white;
+  }
+
+  /* Logout button - red */
+  button:has(svg + span:contains("Logout")),
+  button:has(svg + text:contains("Logout")) {
+    @apply bg-red-500 hover:bg-red-600 text-white;
+  }
+
+  /* Floating Messages Button - make bigger & noticeable */
+  .fixed.bottom-6.right-6 button {
+    @apply p-6 bg-blue-600 hover:bg-blue-700 text-white shadow-2xl;
+  }
+  .fixed.bottom-6.right-6 button svg {
+    @apply w-8 h-8; /* make the message icon larger */
+  }
+             }
+             
