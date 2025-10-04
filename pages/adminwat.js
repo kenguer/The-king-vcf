@@ -1,3 +1,5 @@
+"use client"; // Obligatwa pou Next.js 13+ pou fè paj sa client-side
+
 import { useEffect, useState } from "react";
 import {
   Shield,
@@ -24,11 +26,13 @@ export default function Admin() {
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
 
+  // --- Check auth
   async function checkAuth() {
     try {
       const res = await fetch("/api/admin/check");
-      setAuthed(res.ok);
-      return res.ok;
+      const ok = res.ok;
+      setAuthed(ok);
+      return ok;
     } catch (err) {
       console.error("checkAuth error:", err);
       setAuthed(false);
@@ -46,6 +50,7 @@ export default function Admin() {
     })();
   }, []);
 
+  // --- Login
   async function login(e) {
     e.preventDefault();
     setLoading(true);
@@ -71,6 +76,7 @@ export default function Admin() {
     }
   }
 
+  // --- Logout
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     setAuthed(false);
@@ -78,34 +84,50 @@ export default function Admin() {
     setMessages([]);
   }
 
+  // --- Load contacts
   async function loadContacts() {
     try {
       const res = await fetch("/api/contacts");
       const j = await res.json().catch(() => null);
+
       if (!res.ok) {
         console.error("Failed to fetch contacts", j);
         setContacts([]);
         return;
       }
-      const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? [];
-      setContacts(Array.isArray(maybeArray) ? maybeArray : []);
+
+      const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
+      const finalArray = Array.isArray(maybeArray)
+        ? maybeArray
+        : Array.isArray(maybeArray?.data)
+        ? maybeArray.data
+        : [];
+
+      setContacts(finalArray);
     } catch (err) {
       console.error("loadContacts error:", err);
       setContacts([]);
     }
   }
 
+  // --- Load messages
   async function loadMessages() {
     try {
       const res = await fetch("/api/messages");
       const j = await res.json().catch(() => null);
-      setMessages(res.ok ? j?.messages ?? [] : []);
+      if (!res.ok) {
+        console.error("Failed to fetch messages", j);
+        setMessages([]);
+        return;
+      }
+      setMessages(j?.messages ?? []);
     } catch (err) {
       console.error("loadMessages error:", err);
       setMessages([]);
     }
   }
 
+  // --- Mark messages as read
   async function markMessagesRead() {
     try {
       await fetch("/api/messages/read", { method: "POST" });
@@ -115,6 +137,7 @@ export default function Admin() {
     }
   }
 
+  // --- Delete contact
   async function deleteOne(id) {
     if (!confirm("Delete contact?")) return;
     const res = await fetch("/api/delete", {
@@ -126,6 +149,7 @@ export default function Admin() {
     else alert("Failed");
   }
 
+  // --- Delete all contacts
   async function deleteAll() {
     if (!confirm("Delete ALL contacts?")) return;
     const res = await fetch("/api/deleteAll", { method: "POST" });
@@ -133,19 +157,20 @@ export default function Admin() {
     else alert("Failed");
   }
 
+  // --- Download
   function downloadVCF() {
-    window.location.href = "/api/export-vcf";
+    if (typeof window !== "undefined") window.location.href = "/api/export-vcf";
   }
   function downloadPDF() {
-    window.location.href = "/api/export-pdf";
+    if (typeof window !== "undefined") window.location.href = "/api/export-pdf";
   }
 
+  // --- Edit contact
   function startEdit(contact) {
     setEditContactId(contact.id);
     setEditName(contact.name);
     setEditPhone(contact.phone);
   }
-
   async function saveEdit(id) {
     if (!editName.trim() || !editPhone.trim()) return alert("Fill fields");
     try {
@@ -168,7 +193,8 @@ export default function Admin() {
 
   const unreadCount = messages.filter((m) => !m.read).length;
 
-  if (!authed) {
+  // --- JSX ---
+  if (!authed)
     return (
       <div className="max-w-sm mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold inline-flex items-center gap-2">
@@ -179,25 +205,24 @@ export default function Admin() {
             placeholder="username"
             value={user}
             onChange={(e) => setUser(e.target.value)}
-            className="px-4 py-3 rounded-xl bg-gray-800 border border-white/10 text-white"
+            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10"
           />
           <input
             placeholder="password"
             type="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
-            className="px-4 py-3 rounded-xl bg-gray-800 border border-white/10 text-white"
+            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10"
           />
           <button
             type="submit"
-            className="px-4 py-2 rounded-2xl bg-green-500 text-black font-bold hover:bg-green-600 transition-all"
+            className="btn-primary px-4 py-2 rounded-2xl bg-neon-green text-black font-bold hover:bg-neon-green/80 transition-all"
           >
             {loading ? "..." : "Login"}
           </button>
         </form>
       </div>
     );
-  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -209,13 +234,13 @@ export default function Admin() {
         <div className="flex items-center gap-2">
           <button
             onClick={downloadVCF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-green-500/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
           >
             <Download size={16} /> Download VCF
           </button>
           <button
             onClick={downloadPDF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-green-500/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
           >
             <FileText size={16} /> Download PDF
           </button>
@@ -255,17 +280,14 @@ export default function Admin() {
               </tr>
             )}
             {contacts.map((c, i) => (
-              <tr
-                key={c.id ?? i}
-                className="odd:bg-white/[0.02] hover:bg-white/[0.05]"
-              >
+              <tr key={c.id ?? i} className="odd:bg-white/[0.02] hover:bg-white/[0.05]">
                 <td className="px-4 py-2">{i + 1}</td>
                 <td className="px-4 py-2">
                   {editContactId === c.id ? (
                     <input
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-gray-800 text-white outline-none"
+                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
                     />
                   ) : (
                     c.name
@@ -276,7 +298,7 @@ export default function Admin() {
                     <input
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-gray-800 text-white outline-none"
+                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
                     />
                   ) : (
                     c.phone
@@ -289,7 +311,7 @@ export default function Admin() {
                   {editContactId === c.id ? (
                     <button
                       onClick={() => saveEdit(c.id)}
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-green-500 text-black"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-neon-green text-black"
                     >
                       <Check size={14} /> Save
                     </button>
@@ -325,4 +347,6 @@ export default function Admin() {
           }}
           className="relative bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
         >
-          <Message
+          <MessageCircle size={24} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-xs font-bold px-2 py-0.
