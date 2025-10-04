@@ -90,54 +90,55 @@ setOpenFaqIndex(openFaqIndex === index ? null : index);
 };
 
 return (
-
-<div className="max-w-5xl mx-auto px-4 py-8">  
-{/* HERO SECTION */}  
-<div className="grid lg:grid-cols-2 gap-8 items-center">  
-<div>  
-<motion.h1  
-initial={{ opacity: 0, y: 6 }}  
-animate={{ opacity: 1, y: 0 }}  
-className="text-3xl sm:text-5xl font-extrabold"  
->  
-Welcome to <span className="text-accent">Ralph Xpert VCF</span>  
-</motion.h1>  
-<p className="text-sm text-gray-300 mt-4">  
-Bienvenue dans la communauté Ralph Xpert ! 🌟 Nous allons vous aider à obtenir plus de visibilité. Suivez les instructions et augmentez facilement vos vues.  
-</p>  
-</div>  <motion.div
-initial={{ opacity: 0, scale: 0.98 }}
-animate={{ opacity: 1, scale: 1 }}
-className="card rounded-2xl p-6"
+<div className="max-w-5xl mx-auto px-4 py-8">
+{/* HERO SECTION */}
+<div className="grid lg:grid-cols-2 gap-8 items-center">
+<div>
+<motion.h1
+initial={{ opacity: 0, y: 6 }}
+animate={{ opacity: 1, y: 0 }}
+className="text-3xl sm:text-5xl font-extrabold"
 >
-<div className="grid grid-cols-3 gap-4">
-<div className="p-4 rounded-xl bg-white/3">
-<div className="text-sm text-gray-300">Total Contacts</div>
-<div className="text-xl font-semibold mt-2">{count}</div>
+Welcome to <span className="text-accent">Ralph Xpert VCF</span>
+</motion.h1>
+<p className="text-sm text-gray-300 mt-4">
+Bienvenue dans la communauté Ralph Xpert ! 🌟 Nous allons vous aider à obtenir plus de visibilité. Suivez les instructions et augmentez facilement vos vues.
+</p>
 </div>
-<div className="p-4 rounded-xl bg-white/3">
-<div className="text-sm text-gray-300">Export</div>
-<div className="text-xl font-semibold mt-2">VCF / PDF</div>
-</div>
-<div className="p-4 rounded-xl bg-white/3">
-<div className="text-sm text-gray-300">Theme</div>
-<div className="text-xl font-semibold mt-2">Dark • Green</div>
-</div>
-</div>
-</motion.div>
 
-  </div>    {/* UPLOAD BUTTON */}
+<motion.div  
+      initial={{ opacity: 0, scale: 0.98 }}  
+      animate={{ opacity: 1, scale: 1 }}  
+      className="card rounded-2xl p-6"  
+    >  
+      <div className="grid grid-cols-3 gap-4">  
+        <div className="p-4 rounded-xl bg-white/3">  
+          <div className="text-sm text-gray-300">Total Contacts</div>  
+          <div className="text-xl font-semibold mt-2">{count}</div>  
+        </div>  
+        <div className="p-4 rounded-xl bg-white/3">  
+          <div className="text-sm text-gray-300">Export</div>  
+          <div className="text-xl font-semibold mt-2">VCF / PDF</div>  
+        </div>  
+        <div className="p-4 rounded-xl bg-white/3">  
+          <div className="text-sm text-gray-300">Theme</div>  
+          <div className="text-xl font-semibold mt-2">Dark • Green</div>  
+        </div>  
+      </div>  
+    </motion.div>  
+  </div>  
 
-  <div className="mt-6">    
-    <Link    
-      href="/upload"    
-      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"    
-    >    
-      <Upload size={18} /> s'inscrire maintenant / Upload    
-    </Link>    
-  </div> 
-        {/* TESTIMONIALS SECTION */}
-{/* TESTIMONIALS SECTION */}
+  {/* UPLOAD BUTTON */}  
+  <div className="mt-6">  
+    <Link  
+      href="/upload"  
+      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"  
+    >  
+      <Upload size={18} /> s'inscrire maintenant / Upload  
+    </Link>  
+  </div>
+
+ {/* TESTIMONIALS SECTION */}
 <div className="mt-16">
   <h2 className="text-2xl font-bold text-gray-200">Testimonials</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
@@ -166,128 +167,132 @@ className="card rounded-2xl p-6"
     ))}
   </div>
 </div>
-    {/* CONTACT BUTTON SECTION */}    
-  <div className="mt-20">    
-    <div className="bg-green-600 text-center py-10 rounded-2xl shadow">    
-      <h2 className="text-3xl font-bold flex justify-center items-center gap-2">    
-        <Phone /> Contact Ralph Xpert    
-      </h2>    
-      <p className="text-gray-100 mt-3 max-w-2xl mx-auto">    
-        Une question, un projet ou juste envie de discuter ? Notre équipe vous accompagne dans votre croissance digitale !     
-      </p>    
-    </div>    
-    <div className="card mt-8 p-8 rounded-2xl text-center">    
-      <h3 className="text-xl font-semibold flex justify-center items-center gap-2 text-green-400">    
-        <MessageCircle /> Contacter nous des maintenant     
-      </h3>    
-      <p className="text-gray-300 mb-6">    
-         Contactez notre équipe dès maintenant en cliquant sur le bouton ci-dessous.    
-      </p>    <Link    
-    href="/contact"    
-    className="bg-green-600 w-full py-3 rounded-xl font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2 inline-block"    
-  >    
-    📞 Contacter nous    
-  </Link>    
+      {/* CONTACT BUTTON SECTION */}  
+  <div className="mt-20">  
+    <div className="bg-green-600 text-center py-10 rounded-2xl shadow">  
+      <h2 className="text-3xl font-bold flex justify-center items-center gap-2">  
+        <Phone /> Contact Ralph Xpert  
+      </h2>  
+      <p className="text-gray-100 mt-3 max-w-2xl mx-auto">  
+        Une question, un projet ou juste envie de discuter ? Notre équipe vous accompagne dans votre croissance digitale !   
+      </p>  
+    </div>  
+    <div className="card mt-8 p-8 rounded-2xl text-center">  
+      <h3 className="text-xl font-semibold flex justify-center items-center gap-2 text-green-400">  
+        <MessageCircle /> Contacter nous des maintenant   
+      </h3>  
+      <p className="text-gray-300 mb-6">  
+         Contactez notre équipe dès maintenant en cliquant sur le bouton ci-dessous.  
+      </p>  
+
+      <Link  
+        href="/contact"  
+        className="bg-green-600 w-full py-3 rounded-xl font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2 inline-block"  
+      >  
+        📞 Contacter nous  
+      </Link>  
+    </div>  
+  </div>  
+
+  {/* FAQ SECTION */}  
+  <div className="card mt-16 p-8 rounded-2xl">  
+    <h2 className="text-2xl font-bold text-green-400 mb-6">  
+      Frequently Asked Questions  
+    </h2>  
+    <div className="space-y-4">  
+      {faqData.map((faq, index) => (  
+        <div key={index} className="border-b border-gray-700 pb-4">  
+          <button  
+            onClick={() => handleFaqToggle(index)}  
+            className="w-full flex justify-between items-center text-left"  
+          >  
+            <span className="font-semibold text-lg text-white">{faq.question}</span>  
+            {openFaqIndex === index ? (  
+              <Minus className="text-green-400" />  
+            ) : (  
+              <Plus className="text-green-400" />  
+            )}  
+          </button>  
+          <AnimatePresence>  
+            {openFaqIndex === index && (  
+              <motion.div  
+                initial={{ opacity: 0, height: 0, marginTop: 0 }}  
+                animate={{ opacity: 1, height: "auto", marginTop: "16px" }}  
+                exit={{ opacity: 0, height: 0, marginTop: 0 }}  
+                transition={{ duration: 0.3 }}  
+                className="overflow-hidden"  
+              >  
+                <div className="p-4 bg-gray-800 rounded-lg text-gray-300">{faq.answer}</div>  
+              </motion.div>  
+            )}  
+          </AnimatePresence>  
+        </div>  
+      ))}  
+    </div>  
+  </div>  
+
+  {/* FOOTER */}  
+  <footer className="bg-gradient-to-r from-[#161B22] to-[#21262D] border-t border-[#30363D] mt-20">  
+    <div className="container mx-auto px-4 py-12">  
+      <div className="grid md:grid-cols-3 gap-8">  
+        <div>  
+          <h2 className="text-[#2FD771] font-bold text-xl mb-4">RALPH XPERT PROGRAMME</h2>  
+          <p className="text-[#C9D1D9] text-sm">  
+            La plateforme de référence pour développer votre réseau WhatsApp et maximiser l'impact de vos statuts.  
+          </p>  
+        </div>  
+
+        <div>  
+          <h3 className="text-[#2FD771] font-bold mb-4">Services</h3>  
+          <ul className="space-y-2 text-[#C9D1D9] text-sm">  
+            <li>Boost de contacts</li>  
+            <li>Vues de statut</li>  
+            <li>Analytics avancées</li>  
+            <li>Formation premium</li>  
+          </ul>  
+        </div>  
+
+        <div>  
+          <h3 className="text-[#2FD771] font-bold mb-4">Contact & Support</h3>  
+          <div className="space-y-2 text-[#C9D1D9] text-sm">  
+            <div className="flex items-center gap-2">  
+              <Mail className="w-4 h-4" />  
+              <a href="mailto:elogekenguer@gmail.com" className="hover:text-[#2FD771]">  
+                elogekenguer@gmail.com  
+              </a>  
+            </div>  
+            <div className="flex items-center gap-2">  
+              <Phone className="w-4 h-4" />  
+              <a href="tel:+18494597173" className="hover:text-[#2FD771]">  
+                +1 849 459 7173  
+              </a>  
+            </div>  
+            <div className="flex items-center gap-2">  
+              <MessageCircle className="w-4 h-4" />  
+              <a  
+                href="https://wa.me/18494597173"  
+                target="_blank"  
+                rel="noopener noreferrer"  
+                className="hover:text-[#2FD771]"  
+              >  
+                WhatsApp 24/7 Disponible  
+              </a>  
+            </div>  
+          </div>  
+        </div>  
+      </div>  
+
+      <div className="border-t border-[#30363D] mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center text-[#7D8590] text-sm">  
+        <span>© 2025 RALPH XPERT PROGRAMME. Tous droits réservés.</span>  
+        <span>  
+          Créé par <strong>Mr RALPH</strong>  
+        </span>  
+      </div>  
+    </div>  
+  </footer>  
 </div>
 
-  </div>    {/* FAQ SECTION */}
-
-  <div className="card mt-16 p-8 rounded-2xl">    
-    <h2 className="text-2xl font-bold text-green-400 mb-6">    
-      Frequently Asked Questions    
-    </h2>    
-    <div className="space-y-4">    
-      {faqData.map((faq, index) => (    
-        <div key={index} className="border-b border-gray-700 pb-4">    
-          <button    
-            onClick={() => handleFaqToggle(index)}    
-            className="w-full flex justify-between items-center text-left"    
-          >    
-            <span className="font-semibold text-lg text-white">{faq.question}</span>    
-            {openFaqIndex === index ? (    
-              <Minus className="text-green-400" />    
-            ) : (    
-              <Plus className="text-green-400" />    
-            )}    
-          </button>    
-          <AnimatePresence>    
-            {openFaqIndex === index && (    
-              <motion.div    
-                initial={{ opacity: 0, height: 0, marginTop: 0 }}    
-                animate={{ opacity: 1, height: "auto", marginTop: "16px" }}    
-                exit={{ opacity: 0, height: 0, marginTop: 0 }}    
-                transition={{ duration: 0.3 }}    
-                className="overflow-hidden"    
-              >    
-                <div className="p-4 bg-gray-800 rounded-lg text-gray-300">{faq.answer}</div>    
-              </motion.div>    
-            )}    
-          </AnimatePresence>    
-        </div>    
-      ))}    
-    </div>    
-  </div>    {/* FOOTER */}
-
-  <footer className="bg-gradient-to-r from-[#161B22] to-[#21262D] border-t border-[#30363D] mt-20">    
-    <div className="container mx-auto px-4 py-12">    
-      <div className="grid md:grid-cols-3 gap-8">    
-        <div>    
-          <h2 className="text-[#2FD771] font-bold text-xl mb-4">RALPH XPERT PROGRAMME</h2>    
-          <p className="text-[#C9D1D9] text-sm">    
-            La plateforme de référence pour développer votre réseau WhatsApp et maximiser l'impact de vos statuts.    
-          </p>    
-        </div>    <div>    
-      <h3 className="text-[#2FD771] font-bold mb-4">Services</h3>    
-      <ul className="space-y-2 text-[#C9D1D9] text-sm">    
-        <li>Boost de contacts</li>    
-        <li>Vues de statut</li>    
-        <li>Analytics avancées</li>    
-        <li>Formation premium</li>    
-      </ul>    
-    </div>    
-
-    <div>    
-      <h3 className="text-[#2FD771] font-bold mb-4">Contact & Support</h3>    
-      <div className="space-y-2 text-[#C9D1D9] text-sm">    
-        <div className="flex items-center gap-2">    
-          <Mail className="w-4 h-4" />    
-          <a href="mailto:elogekenguer@gmail.com" className="hover:text-[#2FD771]">    
-            elogekenguer@gmail.com    
-          </a>    
-        </div>    
-        <div className="flex items-center gap-2">    
-          <Phone className="w-4 h-4" />    
-          <a href="tel:+18494597173" className="hover:text-[#2FD771]">    
-            +1 849 459 7173    
-          </a>    
-        </div>    
-        <div className="flex items-center gap-2">    
-          <MessageCircle className="w-4 h-4" />    
-          <a    
-            href="https://wa.me/18494597173"    
-            target="_blank"    
-            rel="noopener noreferrer"    
-            className="hover:text-[#2FD771]"    
-          >    
-            WhatsApp 24/7 Disponible    
-          </a>    
-        </div>    
-      </div>    
-    </div>    
-  </div>    
-
-  <div className="border-t border-[#30363D] mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center text-[#7D8590] text-sm">    
-    <span>© 2025 RALPH XPERT PROGRAMME. Tous droits réservés.</span>    
-    <span>    
-      Créé par <strong>Mr RALPH</strong>    
-    </span>    
-  </div>    
-</div>
-
-  </footer>    
-</div>  );
+);
 }
 
-Bro style animation bel ti couleur eskew kapab
 
-  
