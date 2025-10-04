@@ -10,7 +10,7 @@ import {
   Edit2,
 } from "lucide-react";
 
-// Simple toast component
+// Toast component
 function Toast({ message, onClose }) {
   useEffect(() => {
     const t = setTimeout(onClose, 3000);
@@ -19,6 +19,52 @@ function Toast({ message, onClose }) {
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neon-green/90 text-black px-4 py-2 rounded-xl shadow-lg animate-fade-in">
       {message}
+    </div>
+  );
+}
+
+// Modal edit contact
+function EditModal({ contact, onClose, onSave }) {
+  const [name, setName] = useState(contact?.name || "");
+  const [phone, setPhone] = useState(contact?.phone || "");
+
+  const save = () => {
+    onSave({ ...contact, name, phone });
+  };
+
+  if (!contact) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-black/90 p-6 rounded-2xl border border-neon-green max-w-md w-full">
+        <h3 className="text-neon-green text-lg font-bold mb-4">Modifier Contact</h3>
+        <input
+          className="w-full mb-3 px-4 py-2 rounded-xl bg-black/70 border border-neon-green/40 text-neon-green outline-none focus:ring-2 focus:ring-neon-green"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Nom"
+        />
+        <input
+          className="w-full mb-3 px-4 py-2 rounded-xl bg-black/70 border border-neon-green/40 text-neon-green outline-none focus:ring-2 focus:ring-neon-green"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Phone"
+        />
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-xl border border-white/20 hover:bg-white/10 transition-all"
+          >
+            Annuler
+          </button>
+          <button
+            onClick={save}
+            className="px-4 py-2 rounded-xl bg-neon-green hover:bg-neon-green/80 text-black transition-all"
+          >
+            Sauvegarder
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -37,25 +83,21 @@ export default function Admin() {
   async function checkAuth() {
     try {
       const res = await fetch("/api/admin/check");
-      const ok = res.ok;
-      setAuthed(ok);
-      return ok;
+      setAuthed(res.ok);
     } catch (err) {
-      console.error("checkAuth error:", err);
       setAuthed(false);
-      return false;
     }
   }
 
   useEffect(() => {
     (async () => {
-      const ok = await checkAuth();
-      if (ok) {
+      await checkAuth();
+      if (authed) {
         await loadContacts();
         await loadMessages();
       }
     })();
-  }, []);
+  }, [authed]);
 
   async function login(e) {
     e.preventDefault();
@@ -77,7 +119,6 @@ export default function Admin() {
       }
     } catch (err) {
       setLoading(false);
-      console.error("login error:", err);
       setToast("Login failed (network)");
     }
   }
@@ -102,7 +143,6 @@ export default function Admin() {
         : [];
       setContacts(finalArray);
     } catch (err) {
-      console.error("loadContacts error:", err);
       setContacts([]);
     }
   }
@@ -111,14 +151,8 @@ export default function Admin() {
     try {
       const res = await fetch("/api/messages");
       const j = await res.json().catch(() => null);
-      if (!res.ok) {
-        console.error("Failed to fetch messages", j);
-        setMessages([]);
-        return;
-      }
       setMessages(j?.messages ?? []);
     } catch (err) {
-      console.error("loadMessages error:", err);
       setMessages([]);
     }
   }
@@ -127,9 +161,7 @@ export default function Admin() {
     try {
       await fetch("/api/messages/read", { method: "POST" });
       setMessages((prev) => prev.map((m) => ({ ...m, read: true })));
-    } catch (err) {
-      console.error("markMessagesRead error:", err);
-    }
+    } catch {}
   }
 
   async function deleteOne(id) {
@@ -142,7 +174,7 @@ export default function Admin() {
     if (res.ok) {
       loadContacts();
       setToast("Contact deleted ✅");
-    } else setToast("Failed to delete contact ❌");
+    } else setToast("Failed ❌");
   }
 
   async function deleteAll() {
@@ -163,25 +195,19 @@ export default function Admin() {
     setToast("PDF export started ✅");
   }
 
-  function handleEdit(contact) {
-    setEditingContact({ ...contact });
-  }
-
-  async function saveEdit() {
-    if (!editingContact) return;
+  async function saveEdit(contact) {
     try {
       const res = await fetch("/api/edit", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(editingContact),
+        body: JSON.stringify(contact),
       });
       if (res.ok) {
         loadContacts();
         setToast("Contact updated ✅");
         setEditingContact(null);
-      } else setToast("Failed to update ❌");
-    } catch (err) {
-      console.error(err);
+      } else setToast("Failed ❌");
+    } catch {
       setToast("Failed ❌");
     }
   }
@@ -279,4 +305,11 @@ export default function Admin() {
                 </td>
                 <td className="px-4 py-2 flex gap-2">
                   <button
-                    onClick={() => handleEdit(c
+                    onClick={() => setEditingContact(c)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white transition-all"
+                  >
+                    <Edit2 size={14} /> Modifier
+                  </button>
+                  <button
+                    onClick={() => deleteOne(c.id)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl border border
