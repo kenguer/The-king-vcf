@@ -83,20 +83,17 @@ export default function Admin() {
     try {
       const res = await fetch("/api/contacts");
       const j = await res.json().catch(() => null);
-
       if (!res.ok) {
         console.error("Failed to fetch contacts", j);
         setContacts([]);
         return;
       }
-
       const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
       const finalArray = Array.isArray(maybeArray)
         ? maybeArray
         : Array.isArray(maybeArray?.data)
         ? maybeArray.data
         : [];
-
       setContacts(finalArray);
     } catch (err) {
       console.error("loadContacts error:", err);
@@ -274,7 +271,10 @@ export default function Admin() {
               </tr>
             )}
             {contacts.map((c, i) => (
-              <tr key={c.id ?? i} className="odd:bg-white/[0.02] hover:bg-white/[0.05]">
+              <tr
+                key={c.id ?? i}
+                className="odd:bg-white/[0.02] hover:bg-white/[0.05]"
+              >
                 <td className="px-4 py-2">{i + 1}</td>
                 <td className="px-4 py-2">
                   {editContactId === c.id ? (
@@ -298,7 +298,9 @@ export default function Admin() {
                     c.phone
                   )}
                 </td>
-                <td className="px-4 py-2">{c.created_at ? new Date(c.created_at).toLocaleString() : "-"}</td>
+                <td className="px-4 py-2">
+                  {c.created_at ? new Date(c.created_at).toLocaleString() : "-"}
+                </td>
                 <td className="px-4 py-2 flex gap-2">
                   {editContactId === c.id ? (
                     <button
@@ -311,4 +313,75 @@ export default function Admin() {
                     <>
                       <button
                         onClick={() => startEdit(c)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-blue-600/20"
+                      >
+                        <Edit2 size={14} /> Edit
+                      </button>
+                      <button
+                        onClick={() => deleteOne(c.id)}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-red-600/20"
+                      >
+                        <Trash2 size={14} /> Delete
+                      </button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Floating Messages Button */}
+      <div className="fixed bottom-6 right-6">
+        <button
+          onClick={() => {
+            setShowMessages(!showMessages);
+            if (!showMessages) markMessagesRead();
+          }}
+          className="relative bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
+        >
+          <MessageCircle size={24} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Messages Popup */}
+      {showMessages && (
+        <div className="fixed bottom-20 right-6 w-96 max-h-[70vh] bg-bgsoft border border-white/10 rounded-2xl shadow-lg overflow-y-auto">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <h3 className="font-bold">Messages</h3>
+            <button onClick={() => setShowMessages(false)}>
+              <X size={18} />
+            </button>
+          </div>
+          <div>
+            {messages.length === 0 ? (
+              <p className="p-4 text-gray-400 text-sm">No messages yet.</p>
+            ) : (
+              messages.map((m, i) => (
+                <div key={m.id ?? i} className="p-4 border-b border-white/5">
+                  <p className="font-semibold">
+                    {m.name} ({m.email})
+                  </p>
+                  <p className="text-sm text-gray-400">{m.phone}</p>
+                  <p className="text-sm text-gray-300 mt-2">{m.topic}</p>
+                  <p className="mt-2">{m.message}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {m.created_at
+                      ? new Date(m.created_at).toLocaleString()
+                      : "-"}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+              }
