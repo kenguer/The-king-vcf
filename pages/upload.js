@@ -16,6 +16,45 @@ const countryRules = {
   "+86": { name: "Chine", flag: "🇨🇳", length: 11 },
   "+212": { name: "Maroc", flag: "🇲🇦", length: 9 },
   "+216": { name: "Tunisie", flag: "🇹🇳", length: 8 },
+  "+1": { name: "États-Unis / Canada", flag: "🇺🇸", length: 10 },
+  "+20": { name: "Égypte", flag: "🇪🇬", length: 10 },
+  "+27": { name: "Afrique du Sud", flag: "🇿🇦", length: 9 },
+  "+30": { name: "Grèce", flag: "🇬🇷", length: 10 },
+  "+31": { name: "Pays-Bas", flag: "🇳🇱", length: 9 },
+  "+32": { name: "Belgique", flag: "🇧🇪", length: 9 },
+  "+33": { name: "France", flag: "🇫🇷", length: 9 },
+  "+34": { name: "Espagne", flag: "🇪🇸", length: 9 },
+  "+39": { name: "Italie", flag: "🇮🇹", length: 10 },
+  "+41": { name: "Suisse", flag: "🇨🇭", length: 9 },
+  "+44": { name: "Royaume-Uni", flag: "🇬🇧", length: 10 },
+  "+49": { name: "Allemagne", flag: "🇩🇪", length: 10 },
+  "+55": { name: "Brésil", flag: "🇧🇷", length: 11 },
+  "+61": { name: "Australie", flag: "🇦🇺", length: 9 },
+  "+62": { name: "Indonésie", flag: "🇮🇩", length: 10 },
+  "+81": { name: "Japon", flag: "🇯🇵", length: 10 },
+  "+82": { name: "Corée du Sud", flag: "🇰🇷", length: 9 },
+  "+84": { name: "Vietnam", flag: "🇻🇳", length: 9 },
+  "+86": { name: "Chine", flag: "🇨🇳", length: 11 },
+  "+90": { name: "Turquie", flag: "🇹🇷", length: 10 },
+  "+212": { name: "Maroc", flag: "🇲🇦", length: 9 },
+  "+213": { name: "Algérie", flag: "🇩🇿", length: 9 },
+  "+216": { name: "Tunisie", flag: "🇹🇳", length: 8 },
+  "+218": { name: "Libye", flag: "🇱🇾", length: 9 },
+  "+221": { name: "Sénégal", flag: "🇸🇳", length: 9 },
+  "+225": { name: "Côte d’Ivoire", flag: "🇨🇮", length: 8 },
+  "+229": { name: "Bénin", flag: "🇧🇯", length: 8 },
+  "+234": { name: "Nigéria", flag: "🇳🇬", length: 10 },
+  "+237": { name: "Cameroun", flag: "🇨🇲", length: 9 },
+  "+241": { name: "Gabon", flag: "🇬🇦", length: 8 },
+  "+242": { name: "Congo", flag: "🇨🇬", length: 9 },
+  "+243": { name: "RD Congo", flag: "🇨🇩", length: 9 },
+  "+250": { name: "Rwanda", flag: "🇷🇼", length: 9 },
+  "+254": { name: "Kenya", flag: "🇰🇪", length: 9 },
+  "+255": { name: "Tanzanie", flag: "🇹🇿", length: 9 },
+  "+256": { name: "Ouganda", flag: "🇺🇬", length: 9 },
+  "+260": { name: "Zambie", flag: "🇿🇲", length: 9 },
+  "+263": { name: "Zimbabwe", flag: "🇿🇼", length: 9 },
+  "+509": { name: "Haïti", flag: "🇭🇹", length: 8 },
   // 👉 Ou ka ajoute plis peyi si ou vle
 };
 
@@ -123,7 +162,7 @@ export default function Upload() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Antre non konplè ou..."
+            placeholder="votre nom complet..."
             className="px-4 py-3 rounded-xl bg-black/70 border border-neon-green/40 text-neon-green placeholder-neon-green/40 outline-none focus:border-neon-green focus:ring-2 focus:ring-neon-green transition-all duration-300"
           />
         </label>
@@ -131,7 +170,7 @@ export default function Upload() {
         {/* Phone Number + Country Dropdown */}
         <label className="grid gap-2">
           <span className="flex items-center gap-2 text-neon-green text-sm font-medium">
-            <Phone size={16} /> Nimewo Telefòn
+            <Phone size={16} /> votre numéro 
           </span>
           <div className="flex gap-3">
             <select
@@ -166,7 +205,7 @@ export default function Upload() {
             type="submit"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-black bg-neon-green hover:bg-neon-green/80 hover:text-black hover:scale-105 hover:shadow-glow transition-all duration-300 shadow-lg shadow-neon-green/30"
           >
-            <UploadIcon size={18} /> Soumèt
+            <UploadIcon size={18} /> inscrit 
           </button>
         </div>
       </form>
