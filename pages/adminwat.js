@@ -27,9 +27,8 @@ export default function Admin() {
   async function checkAuth() {
     try {
       const res = await fetch("/api/admin/check");
-      const ok = res.ok;
-      setAuthed(ok);
-      return ok;
+      setAuthed(res.ok);
+      return res.ok;
     } catch (err) {
       console.error("checkAuth error:", err);
       setAuthed(false);
@@ -83,21 +82,13 @@ export default function Admin() {
     try {
       const res = await fetch("/api/contacts");
       const j = await res.json().catch(() => null);
-
       if (!res.ok) {
         console.error("Failed to fetch contacts", j);
         setContacts([]);
         return;
       }
-
-      const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
-      const finalArray = Array.isArray(maybeArray)
-        ? maybeArray
-        : Array.isArray(maybeArray?.data)
-        ? maybeArray.data
-        : [];
-
-      setContacts(finalArray);
+      const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? [];
+      setContacts(Array.isArray(maybeArray) ? maybeArray : []);
     } catch (err) {
       console.error("loadContacts error:", err);
       setContacts([]);
@@ -108,12 +99,7 @@ export default function Admin() {
     try {
       const res = await fetch("/api/messages");
       const j = await res.json().catch(() => null);
-      if (!res.ok) {
-        console.error("Failed to fetch messages", j);
-        setMessages([]);
-        return;
-      }
-      setMessages(j?.messages ?? []);
+      setMessages(res.ok ? j?.messages ?? [] : []);
     } catch (err) {
       console.error("loadMessages error:", err);
       setMessages([]);
@@ -154,7 +140,6 @@ export default function Admin() {
     window.location.href = "/api/export-pdf";
   }
 
-  // --- Edit Contact ---
   function startEdit(contact) {
     setEditContactId(contact.id);
     setEditName(contact.name);
@@ -174,9 +159,7 @@ export default function Admin() {
         setEditName("");
         setEditPhone("");
         await loadContacts();
-      } else {
-        alert("Failed to update");
-      }
+      } else alert("Failed to update");
     } catch (err) {
       console.error(err);
       alert("Failed to update");
@@ -185,7 +168,6 @@ export default function Admin() {
 
   const unreadCount = messages.filter((m) => !m.read).length;
 
-  // --- JSX ---
   if (!authed) {
     return (
       <div className="max-w-sm mx-auto px-4 py-8">
@@ -197,18 +179,18 @@ export default function Admin() {
             placeholder="username"
             value={user}
             onChange={(e) => setUser(e.target.value)}
-            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10"
+            className="px-4 py-3 rounded-xl bg-gray-800 border border-white/10 text-white"
           />
           <input
             placeholder="password"
             type="password"
             value={pass}
             onChange={(e) => setPass(e.target.value)}
-            className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10"
+            className="px-4 py-3 rounded-xl bg-gray-800 border border-white/10 text-white"
           />
           <button
             type="submit"
-            className="btn-primary px-4 py-2 rounded-2xl bg-neon-green text-black font-bold hover:bg-neon-green/80 transition-all"
+            className="px-4 py-2 rounded-2xl bg-green-500 text-black font-bold hover:bg-green-600 transition-all"
           >
             {loading ? "..." : "Login"}
           </button>
@@ -227,13 +209,13 @@ export default function Admin() {
         <div className="flex items-center gap-2">
           <button
             onClick={downloadVCF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-green-500/20 transition-all"
           >
             <Download size={16} /> Download VCF
           </button>
           <button
             onClick={downloadPDF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-green-500/20 transition-all"
           >
             <FileText size={16} /> Download PDF
           </button>
@@ -273,14 +255,17 @@ export default function Admin() {
               </tr>
             )}
             {contacts.map((c, i) => (
-              <tr key={c.id ?? i} className="odd:bg-white/[0.02] hover:bg-white/[0.05]">
+              <tr
+                key={c.id ?? i}
+                className="odd:bg-white/[0.02] hover:bg-white/[0.05]"
+              >
                 <td className="px-4 py-2">{i + 1}</td>
                 <td className="px-4 py-2">
                   {editContactId === c.id ? (
                     <input
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
+                      className="px-2 py-1 rounded border border-white/20 bg-gray-800 text-white outline-none"
                     />
                   ) : (
                     c.name
@@ -291,7 +276,7 @@ export default function Admin() {
                     <input
                       value={editPhone}
                       onChange={(e) => setEditPhone(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
+                      className="px-2 py-1 rounded border border-white/20 bg-gray-800 text-white outline-none"
                     />
                   ) : (
                     c.phone
@@ -304,7 +289,7 @@ export default function Admin() {
                   {editContactId === c.id ? (
                     <button
                       onClick={() => saveEdit(c.id)}
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-neon-green text-black"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-green-500 text-black"
                     >
                       <Check size={14} /> Save
                     </button>
@@ -340,45 +325,4 @@ export default function Admin() {
           }}
           className="relative bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
         >
-          <MessageCircle size={24} />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
-              {unreadCount}
-            </span>
-          )}
-        </button>
-      </div>
-
-      {/* Messages Popup */}
-      {showMessages && (
-        <div className="fixed bottom-20 right-6 w-96 max-h-[70vh] bg-bgsoft border border-white/10 rounded-2xl shadow-lg overflow-y-auto">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-            <h3 className="font-bold">Messages</h3>
-            <button onClick={() => setShowMessages(false)}>
-              <X size={18} />
-            </button>
-          </div>
-          <div>
-            {messages.length === 0 ? (
-              <p className="p-4 text-gray-400 text-sm">No messages yet.</p>
-            ) : (
-              messages.map((m, i) => (
-                <div key={m.id ?? i} className="p-4 border-b border-white/5">
-                  <p className="font-semibold">
-                    {m.name} ({m.email})
-                  </p>
-                  <p className="text-sm text-gray-400">{m.phone}</p>
-                  <p className="text-sm text-gray-300 mt-2">{m.topic}</p>
-                  <p className="mt-2">{m.message}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {m.created_at ? new Date(m.created_at).toLocaleString() : "-"}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-  }
+          <Message
