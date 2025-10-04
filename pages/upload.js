@@ -134,7 +134,7 @@ export default function Upload() {
         {/* Full Name */}
         <label className="grid gap-2">  
           <span className="flex items-center gap-2 text-neon-green text-sm">  
-            <User size={16} /> Full Name  
+            <User size={15} /> Full Name  
           </span>  
           <input  
             value={name}  
