@@ -2,14 +2,47 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Upload as UploadIcon, User, Phone } from "lucide-react";
 
-// Lis pays yo ak règ validation yo
+// 📌 Lis peyi ak règ validation yo
 const countryRules = {
-  "+509": { name: "Haïti", length: 8 },
-  "+1": { name: "USA/Canada", length: 10 },
-  "+33": { name: "France", length: 9 },
-  "+44": { name: "Royaume-Uni", length: 10 },
-  "+221": { name: "Sénégal", length: 9 }
-  // 👉 Ou ka ajoute plis peyi isit
+  "+509": { name: "Haïti", flag: "🇭🇹", length: 8 },
+  "+1": { name: "USA/Canada", flag: "🇺🇸", length: 10 },
+  "+33": { name: "France", flag: "🇫🇷", length: 9 },
+  "+44": { name: "Royaume-Uni", flag: "🇬🇧", length: 10 },
+  "+221": { name: "Sénégal", flag: "🇸🇳", length: 9 },
+  "+225": { name: "Côte d’Ivoire", flag: "🇨🇮", length: 8 },
+  "+237": { name: "Cameroun", flag: "🇨🇲", length: 9 },
+  "+243": { name: "RD Congo", flag: "🇨🇩", length: 9 },
+  "+91": { name: "Inde", flag: "🇮🇳", length: 10 },
+  "+86": { name: "Chine", flag: "🇨🇳", length: 11 },
+  "+212": { name: "Maroc", flag: "🇲🇦", length: 9 },
+  "+216": { name: "Tunisie", flag: "🇹🇳", length: 8 },
+  "+1": { "name": "USA / Canada", "flag": "🇺🇸", "length": 10 },
+  "+7": { "name": "Russie / Kazakhstan", "flag": "🇷🇺", "length": 10 },
+  "+20": { "name": "Égypte", "flag": "🇪🇬", "length": 9 },
+  "+27": { "name": "Afrique du Sud", "flag": "🇿🇦", "length": 9 },
+  "+30": { "name": "Grèce", "flag": "🇬🇷", "length": 10 },
+  "+31": { "name": "Pays-Bas", "flag": "🇳🇱", "length": 9 },
+  "+32": { "name": "Belgique", "flag": "🇧🇪", "length": 9 },
+  "+33": { "name": "France", "flag": "🇫🇷", "length": 9 },
+  "+34": { "name": "Espagne", "flag": "🇪🇸", "length": 9 },
+  "+39": { "name": "Italie", "flag": "🇮🇹", "length": 10 },
+  "+40": { "name": "Roumanie", "flag": "🇷🇴", "length": 9 },
+  "+44": { "name": "Royaume-Uni", "flag": "🇬🇧", "length": 10 },
+  "+49": { "name": "Allemagne", "flag": "🇩🇪", "length": 10 },
+  "+52": { "name": "Mexique", "flag": "🇲🇽", "length": 10 },
+  "+55": { "name": "Brésil", "flag": "🇧🇷", "length": 11 },
+  "+81": { "name": "Japon", "flag": "🇯🇵", "length": 10 },
+  "+82": { "name": "Corée du Sud", "flag": "🇰🇷", "length": 10 },
+  "+86": { "name": "Chine", "flag": "🇨🇳", "length": 11 },
+  "+91": { "name": "Inde", "flag": "🇮🇳", "length": 10 },
+  "+212": { "name": "Maroc", "flag": "🇲🇦", "length": 9 },
+  "+216": { "name": "Tunisie", "flag": "🇹🇳", "length": 8 },
+  "+221": { "name": "Sénégal", "flag": "🇸🇳", "length": 9 },
+  "+225": { "name": "Côte d’Ivoire", "flag": "🇨🇮", "length": 8 },
+  "+237": { "name": "Cameroun", "flag": "🇨🇲", "length": 9 },
+  "+243": { "name": "RD Congo", "flag": "🇨🇩", "length": 9 },
+  "+509": { "name": "Haïti", "flag": "🇭🇹", "length": 8 },
+  // 👉 Ou ka ajoute plis peyi oswa enpòte yo depi nan yon fichye JSON
 };
 
 export default function Upload() {
@@ -45,7 +78,9 @@ export default function Upload() {
     }  
 
     if (!validatePhone(fullPhone)) {
-      setStatus(`⚠️ Numéro invalide. Pour ${countryRules[countryCode].name}, il doit contenir ${countryRules[countryCode].length} chiffres après l'indicatif.`);
+      setStatus(
+        `⚠️ Numéro invalide. Pour ${countryRules[countryCode].flag} ${countryRules[countryCode].name}, il doit contenir ${countryRules[countryCode].length} chiffres après l'indicatif.`
+      );
       return;
     }
 
@@ -122,7 +157,7 @@ export default function Upload() {
             >
               {Object.keys(countryRules).map((code) => (
                 <option key={code} value={code}>
-                  {countryRules[code].name} ({code})
+                  {countryRules[code].flag} {countryRules[code].name} ({code})
                 </option>
               ))}
             </select>
@@ -151,4 +186,4 @@ export default function Upload() {
       )}  
     </div>
   );
-          }
+                }
