@@ -135,36 +135,38 @@ className="card rounded-2xl p-6"
     >    
       <Upload size={18} /> s'inscrire maintenant / Upload    
     </Link>    
-  </div>  {/* TESTIMONIALS SECTION */}
-
-<div className="mt-16">    
-  <h2 className="text-2xl font-bold text-neon-green drop-shadow-sm">Testimonials</h2>    
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">    
-    {testimonials.map((t) => (    
-      <motion.div    
-        whileHover={{ scale: 1.03, y: -4 }}    
-        initial={{ opacity: 0, y: 10 }}    
-        animate={{ opacity: 1, y: 0 }}    
-        transition={{ duration: 0.3 }}    
-        key={t.name}    
-        className="rounded-xl p-5 bg-gray-900/30 border border-gray-700 hover:border-neon-green transition-all duration-300 shadow-sm"    
-      >    
-        <div className="flex items-center justify-between">    
-          <div>    
-            <div className="font-semibold text-neon-green">{t.name}</div>    
-            <div className="text-sm text-gray-400">{t.role}</div>    
-          </div>    
-          <div className="inline-flex gap-1 mt-1">    
-            {Array.from({ length: t.rating }).map((_, i) => (    
-              <Star key={i} size={16} className="text-yellow-400" />    
-            ))}    
-          </div>    
-        </div>    
-        <p className="mt-3 text-sm text-gray-200">{t.result}</p>    
-      </motion.div>    
-    ))}    
-  </div>    
-</div>  {/* CONTACT BUTTON SECTION */}    
+  </div> 
+        {/* TESTIMONIALS SECTION */}
+{/* TESTIMONIALS SECTION */}
+<div className="mt-16">
+  <h2 className="text-2xl font-bold text-gray-200">Testimonials</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    {testimonials.map((t) => (
+      <motion.div
+        whileHover={{ scale: 1.02, y: -2 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        key={t.name}
+        className="rounded-xl p-5 bg-gray-800 border border-gray-700 hover:border-gray-500 transition-all duration-300 shadow-sm"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-semibold text-gray-100">{t.name}</div>
+            <div className="text-sm text-gray-400">{t.role}</div>
+          </div>
+          <div className="inline-flex gap-1 mt-1">
+            {Array.from({ length: t.rating }).map((_, i) => (
+              <Star key={i} size={16} className="text-yellow-400" />
+            ))}
+          </div>
+        </div>
+        <p className="mt-3 text-sm text-gray-300">{t.result}</p>
+      </motion.div>
+    ))}
+  </div>
+</div>
+    {/* CONTACT BUTTON SECTION */}    
   <div className="mt-20">    
     <div className="bg-green-600 text-center py-10 rounded-2xl shadow">    
       <h2 className="text-3xl font-bold flex justify-center items-center gap-2">    
