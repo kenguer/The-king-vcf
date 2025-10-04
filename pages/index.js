@@ -138,28 +138,32 @@ const testimonials = [
         </Link>
       </div>
 
-      {/* TESTIMONIALS SECTION */}
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold">Testimonials</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-          {testimonials.map((t) => (
-            <motion.div whileHover={{ y: -6 }} key={t.name} className="card rounded-2xl p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-semibold">{t.name}</div>
-                  <div className="text-sm text-gray-300">{t.role}</div>
-                </div>
-                <div className="inline-flex gap-1">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={16} className="text-yellow-400" />
-                  ))}
-                </div>
-              </div>
-              <p className="mt-3 text-sm">{t.result}</p>
-            </motion.div>
-          ))}
+{/* TESTIMONIALS SECTION */}
+<div className="mt-16">
+  <h2 className="text-2xl font-bold text-neon-green drop-shadow-glow">Testimonials</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    {testimonials.map((t) => (
+      <motion.div
+        whileHover={{ y: -6 }}
+        key={t.name}
+        className="rounded-2xl p-5 bg-black/40 backdrop-blur-md shadow-glow transition-all duration-300 hover:scale-105"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-semibold text-neon-green drop-shadow-glow">{t.name}</div>
+            <div className="text-sm text-gray-400">{t.role}</div>
+          </div>
+          <div className="inline-flex gap-1 mt-1">
+            {Array.from({ length: t.rating }).map((_, i) => (
+              <Star key={i} size={16} className="text-yellow-400" />
+            ))}
+          </div>
         </div>
-      </div>
+        <p className="mt-3 text-sm text-gray-200">{t.result}</p>
+      </motion.div>
+    ))}
+  </div>
+</div>
 
       {/* CONTACT BUTTON SECTION */}
       <div className="mt-20">
