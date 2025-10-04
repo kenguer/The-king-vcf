@@ -140,17 +140,20 @@ const testimonials = [
 
 {/* TESTIMONIALS SECTION */}
 <div className="mt-16">
-  <h2 className="text-2xl font-bold text-neon-green drop-shadow-glow">Testimonials</h2>
+  <h2 className="text-2xl font-bold text-neon-green drop-shadow-sm">Testimonials</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
     {testimonials.map((t) => (
       <motion.div
-        whileHover={{ y: -6 }}
+        whileHover={{ scale: 1.03, y: -4 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         key={t.name}
-        className="rounded-2xl p-5 bg-black/40 backdrop-blur-md shadow-glow transition-all duration-300 hover:scale-105"
+        className="rounded-xl p-5 bg-gray-900/30 border border-gray-700 hover:border-neon-green transition-all duration-300 shadow-sm"
       >
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-semibold text-neon-green drop-shadow-glow">{t.name}</div>
+            <div className="font-semibold text-neon-green">{t.name}</div>
             <div className="text-sm text-gray-400">{t.role}</div>
           </div>
           <div className="inline-flex gap-1 mt-1">
@@ -173,10 +176,8 @@ const testimonials = [
           </h2>
           <p className="text-gray-100 mt-3 max-w-2xl mx-auto">
             Une question, un projet ou juste envie de discuter ? Notre équipe vous accompagne dans votre croissance digitale ! 
-        
           </p>
         </div>
-
         <div className="card mt-8 p-8 rounded-2xl text-center">
           <h3 className="text-xl font-semibold flex justify-center items-center gap-2 text-green-400">
             <MessageCircle /> Contacter nous des maintenant 
