@@ -1,5 +1,3 @@
-"use client"; // Obligatwa pou Next.js 13+ pou fè paj sa client-side
-
 import { useEffect, useState } from "react";
 import {
   Shield,
@@ -26,7 +24,6 @@ export default function Admin() {
   const [editName, setEditName] = useState("");
   const [editPhone, setEditPhone] = useState("");
 
-  // --- Check auth
   async function checkAuth() {
     try {
       const res = await fetch("/api/admin/check");
@@ -50,7 +47,6 @@ export default function Admin() {
     })();
   }, []);
 
-  // --- Login
   async function login(e) {
     e.preventDefault();
     setLoading(true);
@@ -76,7 +72,6 @@ export default function Admin() {
     }
   }
 
-  // --- Logout
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     setAuthed(false);
@@ -84,7 +79,6 @@ export default function Admin() {
     setMessages([]);
   }
 
-  // --- Load contacts
   async function loadContacts() {
     try {
       const res = await fetch("/api/contacts");
@@ -110,7 +104,6 @@ export default function Admin() {
     }
   }
 
-  // --- Load messages
   async function loadMessages() {
     try {
       const res = await fetch("/api/messages");
@@ -127,7 +120,6 @@ export default function Admin() {
     }
   }
 
-  // --- Mark messages as read
   async function markMessagesRead() {
     try {
       await fetch("/api/messages/read", { method: "POST" });
@@ -137,7 +129,6 @@ export default function Admin() {
     }
   }
 
-  // --- Delete contact
   async function deleteOne(id) {
     if (!confirm("Delete contact?")) return;
     const res = await fetch("/api/delete", {
@@ -149,7 +140,6 @@ export default function Admin() {
     else alert("Failed");
   }
 
-  // --- Delete all contacts
   async function deleteAll() {
     if (!confirm("Delete ALL contacts?")) return;
     const res = await fetch("/api/deleteAll", { method: "POST" });
@@ -157,20 +147,21 @@ export default function Admin() {
     else alert("Failed");
   }
 
-  // --- Download
   function downloadVCF() {
-    if (typeof window !== "undefined") window.location.href = "/api/export-vcf";
-  }
-  function downloadPDF() {
-    if (typeof window !== "undefined") window.location.href = "/api/export-pdf";
+    window.location.href = "/api/export-vcf";
   }
 
-  // --- Edit contact
+  function downloadPDF() {
+    window.location.href = "/api/export-pdf";
+  }
+
+  // --- Edit Contact ---
   function startEdit(contact) {
     setEditContactId(contact.id);
     setEditName(contact.name);
     setEditPhone(contact.phone);
   }
+
   async function saveEdit(id) {
     if (!editName.trim() || !editPhone.trim()) return alert("Fill fields");
     try {
@@ -184,7 +175,9 @@ export default function Admin() {
         setEditName("");
         setEditPhone("");
         await loadContacts();
-      } else alert("Failed to update");
+      } else {
+        alert("Failed to update");
+      }
     } catch (err) {
       console.error(err);
       alert("Failed to update");
@@ -194,7 +187,7 @@ export default function Admin() {
   const unreadCount = messages.filter((m) => !m.read).length;
 
   // --- JSX ---
-  if (!authed)
+  if (!authed) {
     return (
       <div className="max-w-sm mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold inline-flex items-center gap-2">
@@ -223,6 +216,7 @@ export default function Admin() {
         </form>
       </div>
     );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -304,9 +298,7 @@ export default function Admin() {
                     c.phone
                   )}
                 </td>
-                <td className="px-4 py-2">
-                  {c.created_at ? new Date(c.created_at).toLocaleString() : "-"}
-                </td>
+                <td className="px-4 py-2">{c.created_at ? new Date(c.created_at).toLocaleString() : "-"}</td>
                 <td className="px-4 py-2 flex gap-2">
                   {editContactId === c.id ? (
                     <button
@@ -319,34 +311,4 @@ export default function Admin() {
                     <>
                       <button
                         onClick={() => startEdit(c)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-blue-600/20"
-                      >
-                        <Edit2 size={14} /> Edit
-                      </button>
-                      <button
-                        onClick={() => deleteOne(c.id)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-red-600/20"
-                      >
-                        <Trash2 size={14} /> Delete
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Floating Messages Button */}
-      <div className="fixed bottom-6 right-6">
-        <button
-          onClick={() => {
-            setShowMessages(!showMessages);
-            if (!showMessages) markMessagesRead();
-          }}
-          className="relative bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
-        >
-          <MessageCircle size={24} />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-600 text-xs font-bold px-2 py-0.
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white
