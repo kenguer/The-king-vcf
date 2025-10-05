@@ -7,8 +7,6 @@ import {
   LogOut,
   MessageCircle,
   X,
-  Edit2,
-  Check,
 } from "lucide-react";
 
 export default function Admin() {
@@ -19,10 +17,6 @@ export default function Admin() {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const [editContactId, setEditContactId] = useState(null);
-  const [editName, setEditName] = useState("");
-  const [editPhone, setEditPhone] = useState("");
 
   async function checkAuth() {
     try {
@@ -83,17 +77,23 @@ export default function Admin() {
     try {
       const res = await fetch("/api/contacts");
       const j = await res.json().catch(() => null);
+      console.log("GET /api/contacts", res.status, j);
+
       if (!res.ok) {
         console.error("Failed to fetch contacts", j);
         setContacts([]);
         return;
       }
-      const maybeArray = j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
+
+      const maybeArray =
+        j?.ralph_xpert ?? j?.contacts ?? j?.data ?? j ?? null;
+
       const finalArray = Array.isArray(maybeArray)
         ? maybeArray
         : Array.isArray(maybeArray?.data)
         ? maybeArray.data
         : [];
+
       setContacts(finalArray);
     } catch (err) {
       console.error("loadContacts error:", err);
@@ -147,43 +147,12 @@ export default function Admin() {
   function downloadVCF() {
     window.location.href = "/api/export-vcf";
   }
-
   function downloadPDF() {
     window.location.href = "/api/export-pdf";
   }
 
-  // --- Edit Contact ---
-  function startEdit(contact) {
-    setEditContactId(contact.id);
-    setEditName(contact.name);
-    setEditPhone(contact.phone);
-  }
-
-  async function saveEdit(id) {
-    if (!editName.trim() || !editPhone.trim()) return alert("Fill fields");
-    try {
-      const res = await fetch("/api/updateContact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ id, name: editName, phone: editPhone }),
-      });
-      if (res.ok) {
-        setEditContactId(null);
-        setEditName("");
-        setEditPhone("");
-        await loadContacts();
-      } else {
-        alert("Failed to update");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Failed to update");
-    }
-  }
-
   const unreadCount = messages.filter((m) => !m.read).length;
 
-  // --- JSX ---
   if (!authed) {
     return (
       <div className="max-w-sm mx-auto px-4 py-8">
@@ -204,10 +173,7 @@ export default function Admin() {
             onChange={(e) => setPass(e.target.value)}
             className="px-4 py-3 rounded-xl bg-bgsoft border border-white/10"
           />
-          <button
-            type="submit"
-            className="btn-primary px-4 py-2 rounded-2xl bg-neon-green text-black font-bold hover:bg-neon-green/80 transition-all"
-          >
+          <button type="submit" className="btn-primary px-4 py-2 rounded-2xl">
             {loading ? "..." : "Login"}
           </button>
         </form>
@@ -217,7 +183,6 @@ export default function Admin() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Header Buttons */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold inline-flex items-center gap-2">
           <Shield size={18} /> Admin Dashboard
@@ -225,35 +190,35 @@ export default function Admin() {
         <div className="flex items-center gap-2">
           <button
             onClick={downloadVCF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
           >
             <Download size={16} /> Download VCF
           </button>
           <button
             onClick={downloadPDF}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-neon-green/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
           >
             <FileText size={16} /> Download PDF
           </button>
           <button
             onClick={deleteAll}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-red-600/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
           >
             <Trash2 size={16} /> Delete All
           </button>
           <button
             onClick={logout}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 hover:bg-gray-600/20 transition-all"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10"
           >
             <LogOut size={16} /> Logout
           </button>
         </div>
       </div>
 
-      {/* Contacts Table */}
-      <div className="mt-6 card rounded-2xl overflow-hidden shadow-lg border border-white/10">
+      {/* Contacts table */}
+      <div className="mt-6 card rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="text-left text-gray-300/80 bg-black/50">
+          <thead className="text-left text-gray-300/80">
             <tr>
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Name</th>
@@ -263,71 +228,36 @@ export default function Admin() {
             </tr>
           </thead>
           <tbody>
+            {contacts.map((c, i) => (
+              <tr key={c.id ?? i} className="odd:bg-white/[0.02]">
+                <td className="px-4 py-2">{i + 1}</td>
+                <td className="px-4 py-2">{c.name}</td>
+                <td className="px-4 py-2">{c.phone}</td>
+                <td className="px-4 py-2">
+                  {c.created_at
+                    ? new Date(c.created_at).toLocaleString()
+                    : "-"}
+                </td>
+                <td className="px-4 py-2">
+                  <button
+                    onClick={() => deleteOne(c.id)}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10"
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
             {contacts.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
+                <td
+                  colSpan={5}
+                  className="px-4 py-8 text-center text-gray-400"
+                >
                   No contacts yet.
                 </td>
               </tr>
             )}
-            {contacts.map((c, i) => (
-              <tr
-                key={c.id ?? i}
-                className="odd:bg-white/[0.02] hover:bg-white/[0.05]"
-              >
-                <td className="px-4 py-2">{i + 1}</td>
-                <td className="px-4 py-2">
-                  {editContactId === c.id ? (
-                    <input
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
-                    />
-                  ) : (
-                    c.name
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {editContactId === c.id ? (
-                    <input
-                      value={editPhone}
-                      onChange={(e) => setEditPhone(e.target.value)}
-                      className="px-2 py-1 rounded border border-white/20 bg-black/70 text-neon-green outline-none"
-                    />
-                  ) : (
-                    c.phone
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  {c.created_at ? new Date(c.created_at).toLocaleString() : "-"}
-                </td>
-                <td className="px-4 py-2 flex gap-2">
-                  {editContactId === c.id ? (
-                    <button
-                      onClick={() => saveEdit(c.id)}
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-xl bg-neon-green text-black"
-                    >
-                      <Check size={14} /> Save
-                    </button>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => startEdit(c)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-blue-600/20"
-                      >
-                        <Edit2 size={14} /> Edit
-                      </button>
-                      <button
-                        onClick={() => deleteOne(c.id)}
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded-xl border border-white/10 hover:bg-red-600/20"
-                      >
-                        <Trash2 size={14} /> Delete
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
           </tbody>
         </table>
       </div>
@@ -350,7 +280,7 @@ export default function Admin() {
         </button>
       </div>
 
-      {/* Messages Popup */}
+      {/* Popup for messages */}
       {showMessages && (
         <div className="fixed bottom-20 right-6 w-96 max-h-[70vh] bg-bgsoft border border-white/10 rounded-2xl shadow-lg overflow-y-auto">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
@@ -384,4 +314,6 @@ export default function Admin() {
       )}
     </div>
   );
-              }
+          }
+
+              
